@@ -13,28 +13,36 @@ public class bstDictionary {
     static long wordsNotFound = 0;
     static long compsFound = 0;
     static long compsNotFound = 0;
-    static String[] word = new String[0];
-    static String[] srcWord = new String[0];
+    static String[] word = new String[134173];
+    static String[] srcWord = new String[1000000];
 
 
     /**
+     * Create a clock for elapsed time.
+     * Start the clock.
      * Create an array of 26 Binary Search Trees.
-     * Impliment comparisons using DictionaryReader and FileReader
+     * Implement comparisons using DictionaryReader and FileReader
      * Calculate averages.
+     * Stop the clock.
+     * Measure the elapsed time.
      * @param args
      */
     public static void main(String[] args) {
+        // time taken for a single run
+        long elapsedTime = 0;
+        long startT = System.nanoTime(); //start clock
 
-        //Create and instansiate an array of 26 Binary Search Trees.
+        //Create and instantiate an array of 26 Binary Search Trees.
         BinarySearchTree [] dictionary = new BinarySearchTree[26];
         for (int i = 0; i < dictionary.length; i++)
             dictionary[i] = new BinarySearchTree<String>();
 
         DictionaryReader();
         for (int i = 0; i < word.length; i++) {
-            dictionary[(int) wordstr.charAt(0) - 97].insert(wordstr);
+            dictionary[word[i].charAt(0) - 97].insert(word[i]);
 
         }
+
         FileReader();
         for (int i = 0; i < srcWord.length; i++) {
             if (srcWord[i] == null) {
@@ -44,7 +52,7 @@ public class bstDictionary {
             } else {
 
                 int dictIndex = (srcWord[i].charAt(0) - 97);
-                if (list[dictIndex].contains(srcWord[i])) {
+                if (dictionary[dictIndex].search(srcWord[i])) {
                     //System.out.println(dictIndex);
                     wordsFound++;
                     compsFound += i;
@@ -59,7 +67,13 @@ public class bstDictionary {
         //Calculate the averages.
         long avgcompswordsfound = compsFound / wordsFound;
         long avgcompswordsnotfound = compsNotFound / wordsNotFound;
-        System.out.print("The average words found is " + avgcompswordsfound + " and the average words not found is " + avgcompswordsnotfound);
+        System.out.print("The comparisons for words found is " + compsFound + " and the comparisons for words not found is " + compsNotFound + " ");
+        System.out.print("The words found is " + wordsFound + " and the words not found is " + wordsNotFound + " ");
+        System.out.print("The average words found is " + avgcompswordsfound + " and the average words not found is " + avgcompswordsnotfound + " ");
+        //stop clock
+        long endT = System.nanoTime();
+        elapsedTime = (endT - startT);
+        System.out.println("The elapsed time is " + elapsedTime + " in ns");
     }
     //Parse the dictionary, return an array of words used in the search.
     public static String[] DictionaryReader() {
@@ -83,7 +97,7 @@ public class bstDictionary {
     //Returns an array of words to be searched.
     public static String[] FileReader() {
         try {
-            BufferedReader inf = new BufferedReader(new FileReader("C:\\Users\\Zach\\IdeaProjects\\Project1\\src\\oliver.txt"));
+            BufferedReader inf = new BufferedReader(new FileReader("C:\\Users\\Zach\\IdeaProjects\\newBSTDictionary\\src\\oliver.txt"));
             char let;
             String str = "";
             int n = 0;
@@ -113,3 +127,5 @@ public class bstDictionary {
         return srcWord;
     }
 }
+/*The comparisons for words found is 466559612680 and the comparisons for words not found is 25610781050 The words found is 937492 and the words not found is 54648 The average words found is 497667 and the average words not found is 468649 The elapsed time is 1070844100 in ns
+*/
